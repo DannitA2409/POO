@@ -1,7 +1,5 @@
-# modelos/auto.py
 from modelos.vehiculo import Vehiculo
 
-# HERENCIA: Auto hereda de Vehiculo
 class Auto(Vehiculo):
     def __init__(self, marca, modelo, precio_base, puertas):
         super().__init__(marca, modelo, precio_base)

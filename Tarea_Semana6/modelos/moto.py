@@ -1,4 +1,3 @@
-# modelos/moto.py
 from modelos.vehiculo import Vehiculo
 
 
