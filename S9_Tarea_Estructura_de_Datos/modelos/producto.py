@@ -36,7 +36,7 @@ class Producto:
         return f"ID: {self.__id} | Nombre: {self.__nombre} | Cant: {self.__cantidad} | Precio: ${self.__precio:.2f}"
     
 
-    #Nuevo método auxiliar para facilitar la escritura en texto (separado por comas) 
+    #Nuevo método auxiliar para facilitar la escritura en el texto
     def formato_archivo(self):
         """
         Retorna una cadena lista para guardar en .txt (formato CSV simple).
