@@ -3,104 +3,82 @@ Sistema de Gestión de Inventarios
 Descripción: Sistema modular para gestionar productos usando listas y objetos.
 """
 
+import os
 from modelos.producto import Producto
 from servicios.inventario import Inventario
-import os
 
-def limpiar_pantalla():
-    """Función auxiliar para limpiar la consola según el sistema operativo"""
+def limpiar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def menu_principal():
-    # Instancia la clase de servicio
-    inventario = Inventario()
+def menu():
+    # Al instanciar, automáticamente carga el archivo gracias al __init__
+    sistema = Inventario()
 
     while True:
-        print("\n========================================")
-        print("   SISTEMA DE GESTIÓN DE INVENTARIOS")
-        print("========================================")
-        print("1. Añadir nuevo producto")
-        print("2. Eliminar producto")
-        print("3. Actualizar producto (Cantidad/Precio)")
-        print("4. Buscar producto(s) por nombre")
-        print("5. Mostrar todos los productos")
-        print("6. Salir")
+        print("\n=== GESTIÓN DE INVENTARIO CON ARCHIVOS ===")
+        print("1. Añadir Producto")
+        print("2. Eliminar Producto")
+        print("3. Actualizar Producto")
+        print("4. Ver Inventario Completo")
+        print("5. Salir")
         
-        opcion = input(">>> Seleccione una opción: ")
+        opc = input(">>> Opción: ")
 
-        if opcion == "1":
-            print("\n--- AÑADIR PRODUCTO ---")
-            id_p = input("Ingrese ID único: ")
-            nombre = input("Ingrese nombre: ")
+        if opc == "1":
             try:
-                # Valida que cantidad y precio sean números
-                cant = int(input("Ingrese cantidad: "))
-                precio = float(input("Ingrese precio: "))
+                id_p = input("ID: ")
+                nom = input("Nombre: ")
+                cant = int(input("Cantidad: "))
+                pre = float(input("Precio: "))
                 
-                # Creas el objeto Producto
-                nuevo_prod = Producto(id_p, nombre, cant, precio)
+                nuevo = Producto(id_p, nom, cant, pre)
                 
-                # Llama al servicio para guardar
-                if inventario.agregar_producto(nuevo_prod):
-                    print("¡Producto agregado exitosamente!")
-                else:
-                    print("Error: Ya existe un producto con ese ID.")
+                # El método ahora retorna una tupla (Exito, Mensaje)
+                exito, mensaje = sistema.agregar_producto(nuevo)
+                print(f"Resultado: {mensaje}")
+                
             except ValueError:
-                print("Error: La cantidad debe ser entero y el precio decimal.")
+                print("Error: Los datos numéricos no son válidos.")
 
-        elif opcion == "2":
-            print("\n--- ELIMINAR PRODUCTO ---")
-            id_p = input("Ingrese el ID del producto a eliminar: ")
-            if inventario.eliminar_producto(id_p):
-                print("Producto eliminado correctamente.")
+        elif opc == "2":
+            id_p = input("ID a eliminar: ")
+            if sistema.eliminar_producto(id_p):
+                print("Eliminado y cambios guardados en disco.")
             else:
-                print("Error: No se encontró un producto con ese ID.")
+                print("Producto no encontrado.")
 
-        elif opcion == "3":
-            print("\n--- ACTUALIZAR PRODUCTO ---")
-            id_p = input("Ingrese el ID del producto a actualizar: ")
-            
-            # Verifica si existe antes de pedir datos
-            if inventario.buscar_por_id(id_p):
+        elif opc == "3":
+            id_p = input("ID a actualizar: ")
+            prod = sistema.buscar_por_id(id_p)
+            if prod:
+                print(f"Editando: {prod.get_nombre()}")
                 try:
-                    nueva_cant = int(input("Nueva cantidad: "))
-                    nuevo_precio = float(input("Nuevo precio: "))
-                    inventario.actualizar_producto(id_p, nueva_cant, nuevo_precio)
-                    print("Producto actualizado correctamente.")
+                    nc = int(input("Nueva cantidad: "))
+                    np = float(input("Nuevo precio: "))
+                    sistema.actualizar_producto(id_p, nc, np)
+                    print("Actualizado y cambios guardados en disco.")
                 except ValueError:
-                    print("Error: Ingrese valores numéricos válidos.")
+                    print("Error: Ingrese números válidos.")
             else:
-                print("Error: Producto no encontrado.")
+                print("Producto no encontrado.")
 
-        elif opcion == "4":
-            print("\n--- BUSCAR PRODUCTO ---")
-            termino = input("Ingrese nombre a buscar: ")
-            resultados = inventario.buscar_por_nombre(termino)
-            if resultados:
-                print(f"Se encontraron {len(resultados)} coincidencias:")
-                for p in resultados:
-                    print(p) # Llama automáticamente al método __str__
-            else:
-                print("No se encontraron productos.")
+        elif opc == "4":
+            lista = sistema.listar_todos()
+            print(f"\n--- LISTADO ({len(lista)} productos) ---")
+            if not lista:
+                print("(Inventario vacío o error de lectura)")
+            for p in lista:
+                print(p)
 
-        elif opcion == "5":
-            print("\n--- LISTA DE INVENTARIO ---")
-            productos = inventario.listar_todos()
-            if productos:
-                for p in productos:
-                    print(p)
-            else:
-                print("El inventario está vacío.")
-
-        elif opcion == "6":
-            print("Saliendo del sistema...")
+        elif opc == "5":
+            print("Saliendo... (Los datos ya están seguros en el archivo)")
             break
         
         else:
-            print("Opción no válida, intente de nuevo.")
+            print("Opción inválida.")
         
-        input("\nPresione Enter para continuar...")
-        limpiar_pantalla()
+        input("[Enter para continuar]")
+        limpiar()
 
 if __name__ == "__main__":
-    menu_principal()
+    menu()
