@@ -1,0 +1,33 @@
+{
+    "1": {
+        "tipo": "generico",
+        "id": "1",
+        "nombre": "mouse inalambrico",
+        "cantidad": 20,
+        "precio": 56.0
+    },
+    "3": {
+        "tipo": "alimenticio",
+        "id": "3",
+        "nombre": "Manzana",
+        "cantidad": 20,
+        "precio": 0.3,
+        "vencimiento": "18/03/2026"
+    },
+    "2": {
+        "tipo": "electronico",
+        "id": "2",
+        "nombre": "Camara web",
+        "cantidad": 30,
+        "precio": 15.0,
+        "garantia": "8"
+    },
+    "4": {
+        "tipo": "electronico",
+        "id": "4",
+        "nombre": "Teclado",
+        "cantidad": 10,
+        "precio": 45.0,
+        "garantia": "6"
+    }
+}

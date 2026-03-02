@@ -53,7 +53,6 @@ class GestorInventario:
         return list(self.productos.values())
 
     # PERSISTENCIA
-
     def guardar_inventario(self):
         """Convierte objetos a diccionarios y guarda en JSON"""
         try:
